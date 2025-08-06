@@ -1,22 +1,28 @@
 import {DataTypes} from 'sequelize';
-import sequelize from '../config/database';
+import {sequelize} from '../config/database';
 
 
-const Patient = sequelize.define('Patient', {
+export const Patient = sequelize.define('Patient', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    fullName: {
+    name: {
         type: DataTypes.STRING, 
         allowNull: false
     },
+
+    age: {  
+          type: DataTypes.INTEGER,   
+           allowNull: false, 
+ },
+
     gender:{
         type: DataTypes.ENUM('Male', 'Female', 'Other'),
         allowNull: false
     }
 
-})
+});
 
-export default Patient;     
+    
