@@ -11,16 +11,16 @@ import ReceptionistLayout from '../layouts/receptionistLayout';
 import PharmacistLayout from '../layouts/pharmacistLayout';
 import LabTechnicianLayout from '../layouts/labTechnicianLayout';
 
-import AdminLogin from '../pages/Admin/Login';
+import AdminLogin from '../pages/Admin/login';
 
 import AdminDashboard from '../pages/Admin/dashboard';
-import AdminUsers from '../pages/Admin/Users';
+import AdminUsers from '../pages/Admin/users';
 
 import DoctorDashboard from '../pages/Doctor/dashboard';
 import PatientDashboard from '../pages/Patient/dashboard';
 import NurseDashboard from '../pages/Nurse/dashboard';
 import ReceptionistDashboard from '../pages/Receptionist/dashboard';
-import PharmacistDashboard from '../pages/Pharmacist/dashboard';
+import PharmacistDashboard from '../pages/Pharmacist/dashboard'
 import LabTechnicianDashboard from '../pages/LabTechnician/dashboard';
 
 import NotFound from '../pages/notFound';
