@@ -11,7 +11,7 @@ const roles = [
   { name: 'Lab Technician', path: '/labtechnician/login' },
 ];
 
-const RoleSelection: React.FC = () => {
+export const RoleSelection: React.FC = () => {
   const navigate = useNavigate();
 
   return (

@@ -75,4 +75,4 @@ const PatientLogin: React.FC = () => {
   );
 };
 
-export default PatientLogin;8
+export default PatientLogin;

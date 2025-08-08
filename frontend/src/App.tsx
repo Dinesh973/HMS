@@ -1,16 +1,22 @@
+// import React from 'react';
+// import { AuthProvider } from './context/authContext';
+// import AppRoutes from './routes/appRoutes';
+// import './App.css';
 
-import { AuthProvider } from './context/authContext';
-import { AppRoutes } from './routes/appRoutes';
+// const App: React.FC = () => (
+//   <AuthProvider>
+//     <AppRoutes />
+//   </AuthProvider>
+// );
+
+// export default App;
+
 import React from 'react';
-// import logo from './logo.svg';
-import './App.css';
+import AppRoutes from './routes/appRoutes';
 
-
-const App: React.FC = () => (
-  <AuthProvider>
-    <AppRoutes />
-  </AuthProvider>
-);
+function App() {
+  return <AppRoutes />;
+}
 
 export default App;
 
