@@ -1,20 +1,20 @@
-import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-import dotenv from 'dotenv';
+import { Request, Response, NextFunction } from "express";
+import { verifyJwt, JwtPayload } from "../utils/jwt.util";
 
-dotenv.config();
+export interface AuthRequest extends Request {
+  user?: JwtPayload;
+}
 
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ message: 'Unauthorized' });
+export function authenticateToken(req: AuthRequest, res: Response, next: NextFunction) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-  const token = authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ message: "Access token missing" });
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    (req as any).user = decoded;
-    next();
-  } catch (err) {
-    res.status(401).json({ message: 'Invalid Token' });
-  }
-};
+  const payload = verifyJwt(token);
+
+  if (!payload) return res.status(403).json({ message: "Invalid or expired token" });
+
+  req.user = payload;
+  next();
+}

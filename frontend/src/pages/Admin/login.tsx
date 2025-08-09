@@ -8,13 +8,35 @@ const AdminLogin: React.FC = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    // Replace this with actual API call
-    login({ name: 'Admin User', role: 'admin', email });
-    navigate('/admin/dashboard');
+    try {
+      const response = await fetch('http://localhost:5000/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || 'Login failed');
+      }
+
+      const data = await response.json();
+      // Backend should return { token, user: {name, email, role} }
+      login(data.token, data.user);
+      navigate('/admin/dashboard');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +51,7 @@ const AdminLogin: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
           <input
             type="password"
@@ -37,12 +60,15 @@ const AdminLogin: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
+          {error && <p className="text-red-600">{error}</p>}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            disabled={loading}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
       </div>

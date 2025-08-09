@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setupRoutes = void 0;
+exports.setupRoutes = setupRoutes;
 const http_proxy_middleware_1 = require("http-proxy-middleware");
 const config_1 = require("./config");
 const authMiddleware_1 = require("./authMiddleware");
@@ -41,4 +41,3 @@ function setupRoutes(app) {
         pathRewrite: { '^/billing': '' }
     }));
 }
-exports.setupRoutes = setupRoutes;
