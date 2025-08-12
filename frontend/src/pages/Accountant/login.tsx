@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
+import { ROLES } from '../../constants/roles';
 
 const AccountantLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -22,12 +23,13 @@ const AccountantLogin: React.FC = () => {
       });
 
       const data = await response.json();
+      
 
       if (response.ok) {
-        login({
+        login(data.token, {
           name: data.name,
           email: data.email,
-          role: 'accountant'
+          role: ROLES[8]
         });
         navigate('/accountant/dashboard');
       } else {

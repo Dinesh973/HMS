@@ -1,36 +1,31 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import sequelize from "./config/database";
+import path from "path";
 import adminRoutes from "./routes/adminRoutes";
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// ✅ Middleware
+app.use(cors({
+  origin: "http://localhost:3000", // frontend
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 
-app.use("/uploads", express.static("uploads"));
+// ✅ Serve uploaded profile pictures
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/api/admin", adminRoutes);
+// ✅ Routes
+app.use("/admin", adminRoutes);
 
-const PORT = process.env.PORT || 5000;
+// ✅ Health check
+app.get("/health", (req, res) => {
+  res.json({ status: "Service Admin running" });
+});
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Database connected...");
-    return sequelize.sync({ alter: true });
-  })
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Admin service running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("Failed to connect to DB:", err);
-  });
-
-
-  export default app;
+export default app;

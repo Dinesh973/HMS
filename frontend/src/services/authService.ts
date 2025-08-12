@@ -1,27 +1,39 @@
-// src/services/authService.ts
 export interface LoginPayload {
   email: string;
   password: string;
 }
 
-export const loginService = async (payload: LoginPayload, role: string) => {
-  const response = await fetch(`http://localhost:5000/${role}/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+// API Gateway URL points to the admin service
+const API_GATEWAY_URL = 'http://localhost:1000/admin';
 
-  if (!response.ok) {
-    throw new Error('Invalid credentials');
+export const loginService = async (payload: LoginPayload) => {
+  try {
+    const response = await fetch(`${API_GATEWAY_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error('Invalid credentials');
+    }
+
+    const data = await response.json();
+
+    // Store JWT token if present
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
   }
-
-  const data = await response.json();
-  return data;
 };
 
 export const logoutService = () => {
-  // Example: Clear any stored session data (you can enhance this)
   localStorage.removeItem('token');
 };

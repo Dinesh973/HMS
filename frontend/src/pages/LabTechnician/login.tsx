@@ -22,7 +22,7 @@ const LabTechnicianLogin: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login({ name: data.name, email: data.email, role: 'labtechnician' });
+        login(data.token,{ name: data.name, email: data.email, role: 'labtechnician' });
         navigate('/labtechnician/dashboard');
       } else {
         alert(data.message || 'Login failed');

@@ -25,8 +25,41 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Public routes
-router.post("/register", upload.single("profilePic"), adminController.register);
+router.post("/register",
+    //  upload.single("profilePic"),
+      adminController.register);
 router.post("/login", adminController.login);
+
+
+// Dashboard routes (Protected)
+router.get(
+  "/dashboard/stats",
+  authenticateToken,
+  authorizeRoles("admin", "superadmin"),
+  adminController.getDashboardStats
+);
+
+router.get(
+  "/dashboard/reports",
+  authenticateToken,
+  authorizeRoles("admin", "superadmin"),
+  adminController.getLatestReports
+);
+
+router.get(
+  "/dashboard/appointments",
+  authenticateToken,
+  authorizeRoles("admin", "superadmin"),
+  adminController.getAppointmentsOverview
+);
+
+router.get(
+  "/dashboard/users",
+  authenticateToken,
+  authorizeRoles("admin", "superadmin"),
+  adminController.getUserManagementSummary
+);
+
 
 // Protected routes
 router.get("/profile", authenticateToken, authorizeRoles("admin", "superadmin"), adminController.getProfile);

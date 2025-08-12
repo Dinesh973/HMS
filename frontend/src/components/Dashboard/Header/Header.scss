@@ -1,0 +1,6 @@
+.hms-header { display:flex; justify-content:space-between; align-items:center; padding:16px; background:#fff; border-bottom:1px solid #e6e9ef; }
+.hms-header h1 { font-size:18px; margin:0; }
+.hms-header .meta { display:flex; align-items:center; gap:12px; }
+.hms-header .role { display:flex; align-items:center; gap:6px; color:#475569; }
+.hms-header .icon { width:20px; height:20px; cursor:pointer; color:#475569; }
+.hms-header .logout { border:0; background:transparent; color:#2563eb; cursor:pointer; }

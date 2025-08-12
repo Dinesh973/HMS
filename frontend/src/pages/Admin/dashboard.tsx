@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/authContext';
 import { getAllUsers } from '../../services/adminService';
+import { User } from '../../types/user';
 
 const AdminDashboard: React.FC = () => {
   const { user, logout } = useAuth();
-  const [admins, setAdmins] = useState([]);
+  const [admins, setAdmins] = useState<User[]>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,6 +14,7 @@ const AdminDashboard: React.FC = () => {
       try {
         const data = await getAllUsers();
         setAdmins(data);
+
       } catch (err: any) {
         setError(err.message || 'Failed to load admins');
       } finally {
@@ -43,7 +45,7 @@ const AdminDashboard: React.FC = () => {
 
       {!loading && !error && (
         <ul className="list-disc list-inside">
-          {admins.map((admin: any) => (
+          {admins?.map((admin: any) => (
             <li key={admin.id}>
               {admin.name} - {admin.email}
             </li>

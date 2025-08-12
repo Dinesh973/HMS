@@ -6,5 +6,5 @@ export const ROLES = [
   'receptionist',
   'pharmacist',
   'labtechnician',
-  'accountant',
+  'accountant'
 ];

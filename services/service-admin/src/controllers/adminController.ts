@@ -4,17 +4,78 @@ import { signJwt } from "../utils/jwt.util";
 
 import { AuthRequest } from "../middlewares/authMiddleware";
 
+
+
+
+
+//fetching Dashboard
+export async function getDashboardStats(req: AuthRequest, res: Response) {
+  try {
+    const stats = await adminService.getDashboardStats();
+    res.json(stats);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching dashboard stats" });
+  }
+}
+
+export async function getLatestReports(req: AuthRequest, res: Response) {
+  try {
+    const reports = await adminService.getLatestReports();
+    res.json(reports);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching latest reports" });
+  }
+}
+
+export async function getAppointmentsOverview(req: AuthRequest, res: Response) {
+  try {
+    const appointments = await adminService.getAppointmentsOverview();
+    res.json(appointments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching appointments" });
+  }
+}
+
+export async function getUserManagementSummary(req: AuthRequest, res: Response) {
+  try {
+    const summary = await adminService.getUserManagementSummary();
+    res.json(summary);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching user summary" });
+  }
+}
+
+
+
+
 export async function register(req: Request, res: Response) {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, } = req.body;
     if (!username || !email || !password)
       return res.status(400).json({ message: "Missing fields" });
 
     const profilePic = req.file?.filename ?? null;
 
-    const admin = await adminService.createAdmin({ username, email, password, profilePic });
+    // ✅ Check how many admins are in the DB
+    const existingAdmins = await adminService.getAllAdmins();
+    const role = existingAdmins.length === 0 ? "superadmin" : "admin";
 
-    res.status(201).json({ message: "Admin registered", adminId: admin.id });
+    const admin = await adminService.createAdmin({
+      username,
+      email,
+      password,
+      profilePic,
+       role // pass the role
+    });
+
+    res.status(201).json({
+      message: `Admin registered as ${role}`,
+      adminId: admin.id
+    });
   } catch (error: any) {
     if (error.message === "Email already in use")
       return res.status(409).json({ message: error.message });
@@ -23,16 +84,23 @@ export async function register(req: Request, res: Response) {
   }
 }
 
+
 export async function login(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
+    console.log("Login attempt with:", email, password);
+
     if (!email || !password)
       return res.status(400).json({ message: "Missing fields" });
 
     const admin = await adminService.authenticateAdmin(email, password);
-    if (!admin) return res.status(401).json({ message: "Invalid credentials" });
+    if (!admin) {
+      console.log("Authentication failed for:", email);
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-    const token = signJwt({ id: admin.id, role: "admin" });
+    // Use actual role from DB in JWT
+    const token = signJwt({ id: admin.id, role: admin.role });
 
     res.json({
       token,
@@ -41,6 +109,7 @@ export async function login(req: Request, res: Response) {
         username: admin.username,
         email: admin.email,
         profilePic: admin.profilePic,
+        role: admin.role,  // send role back to frontend
       },
     });
   } catch (error) {

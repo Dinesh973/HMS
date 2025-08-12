@@ -7,11 +7,13 @@ interface AdminAttributes {
   email: string;
   password: string;
   profilePic?: string | null;
+  role: "superadmin" | "admin"; // ✅ Added role
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-interface AdminCreationAttributes extends Optional<AdminAttributes, "id" | "profilePic" | "createdAt" | "updatedAt"> {}
+interface AdminCreationAttributes
+  extends Optional<AdminAttributes, "id" | "profilePic" | "createdAt" | "updatedAt"> {}
 
 class Admin extends Model<AdminAttributes, AdminCreationAttributes> implements AdminAttributes {
   public id!: number;
@@ -19,6 +21,7 @@ class Admin extends Model<AdminAttributes, AdminCreationAttributes> implements A
   public email!: string;
   public password!: string;
   public profilePic?: string | null;
+  public role!: "superadmin" | "admin";
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -49,6 +52,11 @@ Admin.init(
     profilePic: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    role: {
+      type: DataTypes.ENUM("superadmin", "admin"),
+      allowNull: false,
+      defaultValue: "admin",
     },
   },
   {

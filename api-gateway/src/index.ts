@@ -1,27 +1,54 @@
-import express, { Request, Response, NextFunction } from 'express';
-import morgan from 'morgan';
+import express from 'express';
 import cors from 'cors';
-import { setupRoutes } from './routes';
+import morgan from 'morgan';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { authMiddleware } from './authMiddleware';
+import { jwtSecret } from './config';
 
 const app = express();
+const PORT = 1000;
 
-app.use(cors());
-app.use(express.json());
+// Middleware
 app.use(morgan('dev'));
+app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'API Gateway is running' });
+// ✅ Enable CORS for frontend
+app.use(cors({
+  origin: 'http://localhost:3000', // Your frontend URL
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// ✅ Proxy to service-admin for admin routes
+app.use(
+  '/admin',
+  createProxyMiddleware({
+    target: 'http://localhost:5001/admin', // service-admin backend port
+    changeOrigin: true,
+    pathRewrite: {
+      '^/admin': '' // remove /admin prefix when forwarding
+    },
+    onProxyReq: (proxyReq, req) => {
+      // Forward the authorization header if present
+      if (req.headers.authorization) {
+        proxyReq.setHeader('Authorization', req.headers.authorization);
+      }
+    },
+  })
+);
+
+// Test route
+app.get('/', (req, res) => {
+  res.send('API Gateway is running');
 });
 
-setupRoutes(app);
-
-// Global error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err);
-  res.status(500).json({ error: 'Internal Server Error' });
-});
-
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`API Gateway listening on port ${PORT}`);
 });
+
+// Global error handler
+// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+//   console.error(err);
+//   res.status(500).json({ error: 'Internal Server Error' });
+// });
+

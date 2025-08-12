@@ -25,7 +25,7 @@ const PatientLogin: React.FC = () => {
 
       if (response.ok) {
         // Assuming the backend returns { name, email, role }
-        login({
+        login(data.token,{
           name: data.name,
           email: data.email,
           role: data.role,

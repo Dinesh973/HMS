@@ -1,6 +1,8 @@
-import api from './api'; // Assuming api is axios instance
+import { getServiceForRole } from './api';
 import { User } from '../types/user';
-import { getToken } from '../utils/tokenHelpers'; // We'll create this helper
+import { getToken } from '../utils/tokenHelpers';
+
+const api = getServiceForRole('admin');
 
 const authHeaders = () => {
   const token = getToken();
@@ -8,25 +10,31 @@ const authHeaders = () => {
 };
 
 export const getAllUsers = async (): Promise<User[]> => {
-  const res = await api.get<User[]>('/admin/users', { headers: authHeaders() });
-  return res.data;
+  const res = await api.request<User[]>('/admin/users', { method: 'GET' });
+  return res.data!;
 };
 
 export const getUserById = async (id: string): Promise<User> => {
-  const res = await api.get<User>(`/admin/users/${id}`, { headers: authHeaders() });
-  return res.data;
+  const res = await api.request<User>(`/admin/users/${id}`, { method: 'GET' });
+  return res.data!;
 };
 
 export const createUser = async (user: Partial<User>): Promise<User> => {
-  const res = await api.post<User>('/admin/users', user, { headers: authHeaders() });
-  return res.data;
+  const res = await api.request<User>('/admin/users', {
+    method: 'POST',
+    body: JSON.stringify(user),
+  });
+  return res.data!;
 };
 
 export const updateUser = async (id: string, user: Partial<User>): Promise<User> => {
-  const res = await api.put<User>(`/admin/users/${id}`, user, { headers: authHeaders() });
-  return res.data;
+  const res = await api.request<User>(`/admin/users/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(user),
+  });
+  return res.data!;
 };
 
 export const deleteUser = async (id: string): Promise<void> => {
-  await api.delete(`/admin/users/${id}`, { headers: authHeaders() });
+  await api.request(`/admin/users/${id}`, { method: 'DELETE' });
 };

@@ -23,7 +23,7 @@ const DoctorLogin: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login({ name: data.name, email: data.email, role: data.role });
+        login(data.token, { name: data.name, email: data.email, role: data.role });
         navigate('/doctor/dashboard');
       } else {
         alert(data.message || 'Login failed');

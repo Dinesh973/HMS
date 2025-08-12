@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
+import { token } from 'morgan';
+import { User } from '../../types/user';
 
 const ReceptionistLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -21,9 +23,10 @@ const ReceptionistLogin: React.FC = () => {
       });
 
       const data = await response.json();
+      const user = data.user as User;
 
       if (response.ok) {
-        login({ name: data.name, email: data.email, role: data.role });
+        login(data.token, user);
         navigate('/receptionist/dashboard');
       } else {
         alert(data.message || 'Login failed');
