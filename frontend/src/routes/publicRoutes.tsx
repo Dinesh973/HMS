@@ -4,67 +4,113 @@ import RequireAuth from '../components/requireAuth';
 // Role Selection Page
 import RoleSelection from '../pages/Login/RoleSelection';
 
-// Admin Pages
-import AdminLogin from '../pages/Admin/login';
+// Dashboard Pages - Keep your existing dashboard components
 import AdminDashboard from '../pages/Admin/dashboard';
-
-// Doctor Pages
-import DoctorLogin from '../pages/Doctor/login';
-import DoctorDashboard from '../pages/Doctor/dashboard';
-
-// Patient Pages
-import PatientLogin from '../pages/Patient/login';
-import PatientDashboard from '../pages/Patient/dashboard';
-
-// Nurse Pages
-// import NurseLogin from '../pages/Nurse/login';
+// import DoctorDashboard from '../pages/Doctor/dashboard';
+// import PatientDashboard from '../pages/Patient/dashboard';
 // import NurseDashboard from '../pages/Nurse/dashboard';
-
-// Receptionist Pages
-import ReceptionistLogin from '../pages/Receptionist/login';
-import ReceptionistDashboard from '../pages/Receptionist/dashboard';
-
-// Pharmacist Pages
-// import PharmacistLogin from '../pages/Pharmacist/login';
+// import ReceptionistDashboard from '../pages/Receptionist/dashboard';
 // import PharmacistDashboard from '../pages/Pharmacist/dashboard';
-
-// Lab Technician Pages
-// import LabTechnicianLogin from '../pages/LabTechnician/login';
 import LabTechnicianDashboard from '../pages/LabTechnician/dashboard';
 
-// 404 Page (Optional)
+// Unified Login Component
+import LoginPage from '../components/LoginPage/LoginPage';
+
+// 404 Page 
 import NotFound from '../pages/notFound';
 
 export const publicRoutes: RouteObject[] = [
+  // Root - Role Selection
   { path: '/', element: <RoleSelection /> },
+  { path: '/role', element: <RoleSelection /> },
 
-  { path: '/admin/login', element: <AdminLogin /> },
+  // Login routes using unified LoginPage component
+  { path: '/admin/login', element: <LoginPage role="admin" /> },
+  { path: '/doctor/login', element: <LoginPage role="doctor" /> },
+  { path: '/nurse/login', element: <LoginPage role="nurse" /> },
+  { path: '/patient/login', element: <LoginPage role="patient" /> },
+  { path: '/receptionist/login', element: <LoginPage role="receptionist" /> },
+  { path: '/pharmacist/login', element: <LoginPage role="pharmacist" /> },
+  { path: '/labtechnician/login', element: <LoginPage role="labtechnician" /> },
+
+  // Protected Dashboard routes
   {
     path: '/admin/dashboard',
     element: (
-      <RequireAuth>
+      <RequireAuth allowedRoles={['admin']}>
         <AdminDashboard />
       </RequireAuth>
     ),
   },
+  {
+    path: '/doctor/dashboard',
+    element: (
+      <RequireAuth allowedRoles={['doctor']}>
+        {/* <DoctorDashboard /> */}
+        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create DoctorDashboard */}
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/nurse/dashboard',
+    element: (
+      <RequireAuth allowedRoles={['nurse']}>
+        {/* <NurseDashboard /> */}
+        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create NurseDashboard */}
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/patient/dashboard',
+    element: (
+      <RequireAuth allowedRoles={['patient']}>
+        {/* <PatientDashboard /> */}
+        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create PatientDashboard */}
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/receptionist/dashboard',
+    element: (
+      <RequireAuth allowedRoles={['receptionist']}>
+        {/* <ReceptionistDashboard /> */}
+        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create ReceptionistDashboard */}
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/pharmacist/dashboard',
+    element: (
+      <RequireAuth allowedRoles={['pharmacist']}>
+        {/* <PharmacistDashboard /> */}
+        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create PharmacistDashboard */}
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/labtechnician/dashboard',
+    element: (
+      <RequireAuth allowedRoles={['labtechnician']}>
+        <LabTechnicianDashboard />
+      </RequireAuth>
+    ),
+  },
 
-  { path: '/doctor/login', element: <DoctorLogin /> },
-  { path: '/doctor/dashboard', element: <DoctorDashboard /> },
-
-  { path: '/patient/login', element: <PatientLogin /> },
-  { path: '/patient/dashboard', element: <PatientDashboard /> },
-
-  // { path: '/nurse/login', element: <NurseLogin /> },
-  // { path: '/nurse/dashboard', element: <NurseDashboard /> },
-
-  { path: '/receptionist/login', element: <ReceptionistLogin /> },
-  { path: '/receptionist/dashboard', element: <ReceptionistDashboard /> },
-
-  // { path: '/pharmacist/login', element: <PharmacistLogin /> },
-  // { path: '/pharmacist/dashboard', element: <PharmacistDashboard /> },
-
-  // { path: '/lab-technician/login', element: <LabTechnicianLogin /> },
-  // { path: '/lab-technician/dashboard', element: <LabTechnicianDashboard /> },
-
+  // 404 - Catch all
   { path: '*', element: <NotFound /> },
 ];
+
+
+
+// export const publicRoutes: RouteObject[] = [
+//   { path: '/', element: <RoleSelection /> },
+
+//   { path: '/admin/login', element: <AdminLogin /> },
+//   {
+//     path: '/admin/dashboard',
+//     element: (
+//       <RequireAuth>
+//         <AdminDashboard />
+//       </RequireAuth>
+//     ),
+//   },

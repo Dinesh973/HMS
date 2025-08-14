@@ -5,6 +5,12 @@ import type { User, UserRole } from '../types';
 
 const Sidebar: React.FC<{ user: User }> = ({ user }) => {
   const menuItems: Record<UserRole, Array<{ icon: any; label: string; path?: string; active?: boolean }>> = {
+  superadmin: [
+      { icon: Activity, label: 'Dashboard', path: '/admin/dashboard', active: true },
+      { icon: Users, label: 'Users', path: '/admin/users' },
+      { icon: Users, label: 'Departments', path: '/admin/departments' },
+      { icon: Users, label: 'Settings', path: '/admin/settings' },
+    ],
     admin: [
       { icon: Activity, label: 'Dashboard', path: '/admin/dashboard', active: true },
       { icon: Users, label: 'Department', path: '/admin/departments' },

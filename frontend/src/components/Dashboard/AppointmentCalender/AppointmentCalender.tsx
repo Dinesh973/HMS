@@ -1,5 +1,5 @@
 import React from 'react';
-import './AppointmentCalendar.scss';
+import './AppointmentCalender.scss'; 
 import type { Appointment } from '../types';
 
 const AppointmentCalendar: React.FC<{ appointments: Appointment[] }> = ({ appointments }) => {

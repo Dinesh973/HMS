@@ -1,6 +1,7 @@
 import { getServiceForRole } from './api';
-import { User } from '../types/user';
+// import { User } from '../types/user';
 import { getToken } from '../utils/tokenHelpers';
+import { User } from '../components/Dashboard/types';
 
 const api = getServiceForRole('admin');
 

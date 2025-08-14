@@ -8,6 +8,7 @@ const PORT = 5000;
 
 app.use(express.json());
 
+
 app.use('/patients', patientRoutes);
 
 app.get('/', (req, res) => {
@@ -21,7 +22,7 @@ app.listen(PORT, () => {
   .then(() => console.log('Data Sync done'))
   .catch((err) => console.error('DB connection failed:', err));
 
-  // console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });  
 
 

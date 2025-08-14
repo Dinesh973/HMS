@@ -3,10 +3,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import adminRoutes from "./routes/adminRoutes";
+// import serverless from "serverless-http";
 
 dotenv.config();
 
 const app = express();
+
 
 // ✅ Middleware
 app.use(cors({
@@ -16,7 +18,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json());
-
+  
 // ✅ Serve uploaded profile pictures
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -28,4 +30,7 @@ app.get("/health", (req, res) => {
   res.json({ status: "Service Admin running" });
 });
 
-export default app;
+export default app; 
+
+// ✅ Export for serverless
+// module.exports.handler = serverless(app);

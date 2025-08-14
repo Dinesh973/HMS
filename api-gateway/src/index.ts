@@ -23,7 +23,7 @@ app.use(cors({
 app.use(
   '/admin',
   createProxyMiddleware({
-    target: 'http://localhost:5001/admin', // service-admin backend port
+    target: 'http://localhost:1000/admin', // service-admin backend port
     changeOrigin: true,
     pathRewrite: {
       '^/admin': '' // remove /admin prefix when forwarding

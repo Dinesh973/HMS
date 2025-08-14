@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'doctor' | 'nurse' | 'patient' | 'pharmacist' | 'laboratorist' | 'accountant' | 'receptionist';
+export type UserRole = 'admin' | 'superadmin' | 'doctor' | 'nurse' | 'patient' | 'pharmacist' | 'laboratorist' | 'accountant' | 'receptionist' | string ;
 
 export interface UserPreferences {
   theme: 'light' | 'dark';
@@ -8,8 +8,10 @@ export interface UserPreferences {
   }
 
 export interface User {
-  id: string;
-  name: string;
+  id: string | number;
+  name?: string;
+  username: string;
+  
   email: string;
   role: UserRole;
   avatar?: string;
@@ -78,3 +80,5 @@ export interface MedicalRecord {
   prescription: string[];
   followUp?: string;
 }
+
+export interface User {}

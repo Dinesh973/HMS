@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { User } from '../components/Dashboard/types'; // Adjust the import path as necessary
 
-interface User {
-  name: string;
-  email: string;
-  role: string;
-}
+//  export interface User {
+//   id: string;
+//   name: string;
+//   email: string;
+//   role: string;}
 
 interface AuthContextType {
   user: User | null;
@@ -27,7 +28,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
 
+  console.log(' AuthProvider rendering with user:', user, 'token:', token);
+
   useEffect(() => {
+    console.log('AuthProvider useEffect triggered, user:', user, 'token:', token);
     if (token && user) {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
@@ -38,8 +42,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [token, user]);
 
   const login = (token: string, user: User) => {
+    console.log('AuthContext login called with:', { token, user });
     setToken(token);
     setUser(user);
+    console.log('AuthContext state updated');
   };
 
   const logout = () => {

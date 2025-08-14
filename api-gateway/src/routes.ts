@@ -15,12 +15,12 @@ export function setupRoutes(app: Express) {
    * Login route is public (no token needed)
    */
  app.use(
-    "/admin",
+    "/service-admin",
     createProxyMiddleware({
       target: services.admin,
       changeOrigin: true,
       pathRewrite: {
-        "^/admin": "", // remove /admin prefix before sending to admin service
+        "^/service-admin": "", // remove /admin prefix before sending to admin service
       },
     })
   );

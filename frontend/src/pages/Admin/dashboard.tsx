@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/authContext';
 import { getAllUsers } from '../../services/adminService';
-import { User } from '../../types/user';
+import { User } from '../../components/Dashboard/types';
+import handleEdit from  '../Admin/users'
 
 const AdminDashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -52,6 +53,7 @@ const AdminDashboard: React.FC = () => {
           ))}
         </ul>
       )}
+      <button onClick={handleEdit}>Edisfusnhaosuboasubosubvouebvoousisnafobfut</button>
     </div>
   );
 };

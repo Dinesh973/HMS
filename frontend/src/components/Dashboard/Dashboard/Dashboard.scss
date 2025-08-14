@@ -1,0 +1,22 @@
+.hms-root { display:flex; min-height:100vh; background:#f8fafc; }
+.hms-main { flex:1; display:flex; flex-direction:column; }
+.hms-content { flex:1; padding:20px; }
+.page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.page-header .title { font-size:20px; font-weight:700; }
+
+.dashboard-grid { display:grid; gap:16px; grid-template-columns: 1fr; }
+@media (min-width: 1024px) {
+  .dashboard-grid { grid-template-columns: 2fr 1fr; }
+}
+
+.stats-grid { display:grid; grid-template-columns: repeat(1, 1fr); gap:12px; }
+@media (min-width: 640px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.reports-section { margin-top:12px; }
+.widgets { display:grid; gap:12px; grid-template-columns: 1fr; }
+@media (min-width: 1024px) { .widgets { grid-template-columns: 2fr 1fr; } }
+.widget-left { display:flex; flex-direction:column; gap:12px; }
+.widget-right { display:flex; flex-direction:column; gap:12px; }
+
+.loading-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }

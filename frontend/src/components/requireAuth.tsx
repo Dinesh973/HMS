@@ -1,19 +1,34 @@
 import React, { JSX } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 
 interface RequireAuthProps {
-  children: JSX.Element;
+  children: React.ReactNode;
+  allowedRoles?: string[];
 }
 
-const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
+const RequireAuth = ({ children, allowedRoles = [] }: RequireAuthProps): React.ReactElement => {
   const { user } = useAuth();
+  const location = useLocation();
 
+  // Check if user is authenticated
   if (!user) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
-  return children;
+  // Check if user has the required role (if allowedRoles is specified)
+  if (allowedRoles.length > 0 && user.role) {
+    const userRole = user.role.toLowerCase();
+    const hasRequiredRole = allowedRoles.some(role => role.toLowerCase() === userRole);
+    
+    if (!hasRequiredRole) {
+      // Redirect to user's own dashboard or role selection
+      const userDashboard = `/${userRole}/dashboard`;
+      return <Navigate to={userDashboard} replace />;
+    }
+  }
+
+  return <>{children}</>;
 };
 
 export default RequireAuth;

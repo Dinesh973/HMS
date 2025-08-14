@@ -1,24 +1,25 @@
-// import React from 'react';
-// import { AuthProvider } from './context/authContext';
-// import AppRoutes from './routes/appRoutes';
-// import './App.css';
-
-// const App: React.FC = () => (
-//   <AuthProvider>
-//     <AppRoutes />
-//   </AuthProvider>
-// );
-
-// export default App;
-
 import React from 'react';
+import { AuthProvider } from './context/authContext';
 import AppRoutes from './routes/appRoutes';
+import './App.css';
 
-function App() {
-  return <AppRoutes />;
-}
+const App: React.FC = () => (
+  <AuthProvider>
+    <AppRoutes />
+  </AuthProvider>
+);
 
 export default App;
+
+// import React from 'react';
+// import AppRoutes from './routes/appRoutes';
+
+// function App() {
+//   return <AppRoutes />
+//   ;
+// }
+
+// export default App;
 
 // function App(): React.JSX.Element {
 //   return (

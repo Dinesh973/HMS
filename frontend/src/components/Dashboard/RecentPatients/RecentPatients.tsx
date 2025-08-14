@@ -3,7 +3,7 @@ import './RecentPatients.scss';
 import type { PatientData } from '../types';
 
 const RecentPatients: React.FC<{ patients: PatientData[] }> = ({ patients }) => (
-  <div className="bhms-recent">
+  <div className="hms-recent">
     <h3>Recent Patients</h3>
     <div className="list">
       {patients.slice(0, 6).map(p => (

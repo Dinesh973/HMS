@@ -13,11 +13,11 @@ export const loginService = async (payload: LoginPayload) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload), 
     });
 
     if (!response.ok) {
-      throw new Error('Invalid credentials');
+      throw new Error('Invalid credentials'); 
     }
 
     const data = await response.json();

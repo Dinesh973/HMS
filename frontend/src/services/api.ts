@@ -1,3 +1,4 @@
+console.log('ADMIN SERVICE URL:', process.env.REACT_APP_ADMIN_SERVICE_URL);
 
 
 

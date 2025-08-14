@@ -1,5 +1,5 @@
 import React from 'react';
-import './ReportsSection.scss';
+import './ReportSection.scss'; // Adjust the path as necessary
 import type { StatData } from '../types';
 
 const ReportsSection: React.FC<{ reports: Array<{ label: string; value: number; color?: string }> }> = ({ reports }) => {

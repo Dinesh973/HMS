@@ -113,12 +113,12 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
   };
 
   return (
-    <div className="bhms-root">
+    <div className="hms-root">
       <Sidebar user={currentUser} />
-      <div className="bhms-main">
+      <div className="hms-main">
         <Header user={currentUser} />
 
-        <main className="bhms-content">
+        <main className="hms-content">
           <div className="page-header">
             <div className="title">{currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)} Dashboard</div>
             <div className="meta">
