@@ -11,7 +11,6 @@ export interface User {
   id: string | number;
   name?: string;
   username: string;
-  
   email: string;
   role: UserRole;
   avatar?: string;
@@ -81,4 +80,3 @@ export interface MedicalRecord {
   followUp?: string;
 }
 
-export interface User {}

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User } from '../components/Dashboard/types'; // Adjust the import path as necessary
+import type { User } from '../components/Dashboard/types'; // Adjust the import path as necessary
 
 //  export interface User {
 //   id: string;
@@ -20,6 +20,8 @@ const AuthContext = createContext<AuthContextType>({
   login: () => {},
   logout: () => {},
 });
+
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
@@ -60,4 +62,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+

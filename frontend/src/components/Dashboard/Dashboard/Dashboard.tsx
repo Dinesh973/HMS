@@ -28,13 +28,33 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
   const [shift, setShift] = useState<NurseShift | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
 
+  //loading state for the dashboard
+
+  // const [statsLoading, setStatsLoading] = useState(true);
+  // const [reportsLoading, setReportsLoading] = useState(true);
+  // const [appointmentsLoading, setAppointmentsLoading] = useState(true);
+  // const [patientsLoading, setPatientsLoading] = useState(true);
+  // const [shiftLoading, setShiftLoading] = useState(true);
+  // const [tasksLoading, setTasksLoading] = useState(true);
+  
+
+  // useEffect(() => {
+  //   loadStats(service.request<StatData[]>('/stats'));
+  //   loadAppointments();
+  //   loadPatients();
+  //   loadShift();
+  //   loadTasks();
+
+  // },[currentUser]);
+  
   const service = getServiceForRole(currentUser.role);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
+    
     try {
       // Role-specific endpoints
-      if (currentUser.role === 'admin') {
+      if (currentUser.role === 'admin' || currentUser.role === 'superadmin') {
         const s = await service.request<StatData[]>('/stats');
         const r = await service.request<any[]>('/reports');
         if (s.status === 'success' && s.data) setStats(s.data as any);
@@ -129,9 +149,9 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser }) => {
 
           {loading ? (
             <div className="loading-grid">
-              <LoadingSkeleton height="120px" />
-              <LoadingSkeleton height="120px" />
-              <LoadingSkeleton height="120px" />
+              {/* <LoadingSkeleton height="20px" />
+              <LoadingSkeleton height="20px" />
+              <LoadingSkeleton height="20px" /> */}
             </div>
           ) : (
             <div className="dashboard-grid">

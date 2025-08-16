@@ -1,0 +1,447 @@
+// RoleSelection.scss - Hospital Management System Role Selection Styles
+
+// Variables (inherited from LoginPage.scss)
+$primary-colors: (
+  'admin': (#3b82f6, #1e40af),
+  'superadmin': (#8b5cf6, #6d28d9),
+  'doctor': (#10b981, #059669),
+  'nurse': (#ec4899, #be185d),
+  'patient': (#f97316, #ea580c),
+  'receptionist': (#14b8a6, #0d9488),
+  'pharmacist': (#6366f1, #4f46e5),
+  'labtechnician': (#ef4444, #dc2626)
+);
+
+$white: #ffffff;
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+$border-radius: 8px;
+$border-radius-lg: 12px;
+$border-radius-full: 50%;
+
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-fast: all 0.15s ease-in-out;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-hover($color) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba($color, 0.3);
+}
+
+// Main container
+.role-selection-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $gray-50 0%, $gray-100 100%);
+  @include flex-center;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+
+  // Animated background elements
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+    animation: float 25s ease-in-out infinite reverse;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+// Header section
+.role-selection-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 10;
+
+  .system-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, $gray-800 0%, $gray-600 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    
+    @media (max-width: 768px) {
+      font-size: 2.25rem;
+    }
+    
+    @media (max-width: 480px) {
+      font-size: 1.875rem;
+    }
+  }
+
+  .system-subtitle {
+    font-size: 1.125rem;
+    color: $gray-500;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+  }
+
+  .brand-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    border-radius: $border-radius-full;
+    @include flex-center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $white;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: $shadow-lg;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: shimmer 3s infinite;
+    }
+
+    @media (max-width: 768px) {
+      width: 64px;
+      height: 64px;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+// Role selection grid
+.role-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+}
+
+// Individual role buttons
+.role-button {
+  background: $white;
+  border: 2px solid transparent;
+  border-radius: $border-radius-lg;
+  padding: 2rem 1.5rem;
+  cursor: pointer;
+  transition: $transition;
+  position: relative;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-height: 140px;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+    border-color: var(--role-color);
+  }
+
+  &:active {
+    transform: translateY(-2px);
+  }
+
+  // Role icon/avatar
+  .role-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: $border-radius-full;
+    @include flex-center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $white;
+    background: linear-gradient(135deg, var(--role-color) 0%, var(--role-color-dark) 100%);
+    margin-bottom: 0.5rem;
+    box-shadow: $shadow-sm;
+    position: relative;
+    
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   inset: 0;
+    //   background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+    //   border-radius: inherit;
+    //   transform: translateX(-100%);
+    //   transition: transform 0.6s;
+    // }
+  }
+
+  .role-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $gray-800;
+    margin-bottom: 0.25rem;
+  }
+
+  .role-description {
+    font-size: 0.875rem;
+    color: $gray-500;
+    line-height: 1.4;
+  }
+
+  // Hover effect shimmer
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(var(--role-color-rgb), 0.1), transparent);
+    transition: left 0.6s;
+  }
+
+  &:hover {
+    .role-icon::before {
+      transform: translateX(100%);
+    }
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.5rem 1rem;
+    min-height: 120px;
+    
+    .role-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+    }
+    
+    .role-name {
+      font-size: 1rem;
+    }
+    
+    .role-description {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// Role-specific styles
+.role-button.admin {
+  --role-color: #{nth(map-get($primary-colors, 'admin'), 1)};
+  --role-color-dark: #{nth(map-get($primary-colors, 'admin'), 2)};
+  --role-color-rgb: 59, 130, 246;
+}
+
+.role-button.doctor {
+  --role-color: #{nth(map-get($primary-colors, 'doctor'), 1)};
+  --role-color-dark: #{nth(map-get($primary-colors, 'doctor'), 2)};
+  --role-color-rgb: 16, 185, 129;
+}
+
+.role-button.nurse {
+  --role-color: #{nth(map-get($primary-colors, 'nurse'), 1)};
+  --role-color-dark: #{nth(map-get($primary-colors, 'nurse'), 2)};
+  --role-color-rgb: 236, 72, 153;
+}
+
+.role-button.patient {
+  --role-color: #{nth(map-get($primary-colors, 'patient'), 1)};
+  --role-color-dark: #{nth(map-get($primary-colors, 'patient'), 2)};
+  --role-color-rgb: 249, 115, 22;
+}
+
+.role-button.receptionist {
+  --role-color: #{nth(map-get($primary-colors, 'receptionist'), 1)};
+  --role-color-dark: #{nth(map-get($primary-colors, 'receptionist'), 2)};
+  --role-color-rgb: 20, 184, 166;
+}
+
+.role-button.pharmacist {
+  --role-color: #{nth(map-get($primary-colors, 'pharmacist'), 1)};
+  --role-color-dark: #{nth(map-get($primary-colors, 'pharmacist'), 2)};
+  --role-color-rgb: 99, 102, 241;
+}
+
+.role-button.labtechnician {
+  --role-color: #{nth(map-get($primary-colors, 'labtechnician'), 1)};
+  --role-color-dark: #{nth(map-get($primary-colors, 'labtechnician'), 2)};
+  --role-color-rgb: 239, 68, 68;
+}
+
+// Footer section
+.role-selection-footer {
+  margin-top: 3rem;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+
+  .footer-text {
+    color: $gray-400;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .support-link {
+    color: $gray-500;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: $transition-fast;
+    
+    &:hover {
+      color: #3b82f6;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .role-selection-container {
+    background: linear-gradient(135deg, $gray-900 0%, $gray-800 100%);
+  }
+
+  .role-selection-header {
+    .system-title {
+      background: linear-gradient(135deg, $white 0%, $gray-200 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .system-subtitle {
+      color: $gray-400;
+    }
+  }
+
+  .role-button {
+    background: rgba($gray-800, 0.8);
+    border-color: $gray-700;
+
+    .role-name {
+      color: $gray-100;
+    }
+
+    .role-description {
+      color: $gray-400;
+    }
+
+    &:hover {
+      background: rgba($gray-700, 0.9);
+      border-color: var(--role-color);
+    }
+  }
+
+  .role-selection-footer {
+    .footer-text {
+      color: $gray-500;
+    }
+
+    .support-link {
+      color: $gray-400;
+      
+      &:hover {
+        color: #60a5fa;
+      }
+    }
+  }
+}
+
+// Animation for staggered entrance
+.role-button {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+
+  @for $i from 1 through 7 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Loading state
+.role-button.loading {
+  pointer-events: none;
+  opacity: 0.7;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba($white, 0.8);
+    @include flex-center;
+    border-radius: inherit;
+  }
+}

@@ -1,11 +1,15 @@
 import { RouteObject } from 'react-router-dom';
 import RequireAuth from '../components/requireAuth';
+import { useAuth } from '../context/authContext';
 
 // Role Selection Page
-import RoleSelection from '../pages/Login/RoleSelection';
+import RoleSelection from '../components/LoginPage/RoleSelection';
 
 // Dashboard Pages - Keep your existing dashboard components
 import AdminDashboard from '../pages/Admin/dashboard';
+import Dashboard from '../components/Dashboard/Dashboard/Dashboard';
+import DashboardWrapper from '../components/Dashboard/Dashboard/DashBoardWrapper';
+
 // import DoctorDashboard from '../pages/Doctor/dashboard';
 // import PatientDashboard from '../pages/Patient/dashboard';
 // import NurseDashboard from '../pages/Nurse/dashboard';
@@ -19,6 +23,13 @@ import LoginPage from '../components/LoginPage/LoginPage';
 // 404 Page 
 import NotFound from '../pages/notFound';
 
+import { User } from '../components/Dashboard/types'; // Adjust the import path as necessary
+import LoadingSkeleton from '../components/Dashboard/LoadingSkeleton/LoadingSkeleton';
+
+// Wrapper component that handles the User | null type
+
+
+
 export const publicRoutes: RouteObject[] = [
   // Root - Role Selection
   { path: '/', element: <RoleSelection /> },
@@ -26,6 +37,7 @@ export const publicRoutes: RouteObject[] = [
 
   // Login routes using unified LoginPage component
   { path: '/admin/login', element: <LoginPage role="admin" /> },
+  { path: '/superadmin/login', element: <LoginPage role="admin" /> },
   { path: '/doctor/login', element: <LoginPage role="doctor" /> },
   { path: '/nurse/login', element: <LoginPage role="nurse" /> },
   { path: '/patient/login', element: <LoginPage role="patient" /> },
@@ -37,8 +49,10 @@ export const publicRoutes: RouteObject[] = [
   {
     path: '/admin/dashboard',
     element: (
-      <RequireAuth allowedRoles={['admin']}>
-        <AdminDashboard />
+      <RequireAuth allowedRoles={['admin', 'superadmin']}>
+      {/* Admin DashBoard */}
+        
+        <DashboardWrapper />
       </RequireAuth>
     ),
   },
@@ -46,8 +60,8 @@ export const publicRoutes: RouteObject[] = [
     path: '/doctor/dashboard',
     element: (
       <RequireAuth allowedRoles={['doctor']}>
-        {/* <DoctorDashboard /> */}
-        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create DoctorDashboard */}
+        {/* Doctor DashBoard*/}
+        <DashboardWrapper /> 
       </RequireAuth>
     ),
   },
@@ -55,8 +69,8 @@ export const publicRoutes: RouteObject[] = [
     path: '/nurse/dashboard',
     element: (
       <RequireAuth allowedRoles={['nurse']}>
-        {/* <NurseDashboard /> */}
-        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create NurseDashboard */}
+        {/* Nurse Dashboard */}
+        <DashboardWrapper />
       </RequireAuth>
     ),
   },
@@ -64,8 +78,8 @@ export const publicRoutes: RouteObject[] = [
     path: '/patient/dashboard',
     element: (
       <RequireAuth allowedRoles={['patient']}>
-        {/* <PatientDashboard /> */}
-        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create PatientDashboard */}
+        {/* Patient Dashboard */}
+        <DashboardWrapper />
       </RequireAuth>
     ),
   },
@@ -73,8 +87,8 @@ export const publicRoutes: RouteObject[] = [
     path: '/receptionist/dashboard',
     element: (
       <RequireAuth allowedRoles={['receptionist']}>
-        {/* <ReceptionistDashboard /> */}
-        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create ReceptionistDashboard */}
+        {/* ReceptionistDashboard */}
+        <DashboardWrapper /> 
       </RequireAuth>
     ),
   },
@@ -82,8 +96,8 @@ export const publicRoutes: RouteObject[] = [
     path: '/pharmacist/dashboard',
     element: (
       <RequireAuth allowedRoles={['pharmacist']}>
-        {/* <PharmacistDashboard /> */}
-        <AdminDashboard /> {/* Using AdminDashboard as placeholder - replace when you create PharmacistDashboard */}
+        {/* PharmacistDashboard */}
+        <DashboardWrapper /> 
       </RequireAuth>
     ),
   },
@@ -91,7 +105,8 @@ export const publicRoutes: RouteObject[] = [
     path: '/labtechnician/dashboard',
     element: (
       <RequireAuth allowedRoles={['labtechnician']}>
-        <LabTechnicianDashboard />
+        {/* Lab Technician Dashboard */}
+        <DashboardWrapper />
       </RequireAuth>
     ),
   },
@@ -102,15 +117,3 @@ export const publicRoutes: RouteObject[] = [
 
 
 
-// export const publicRoutes: RouteObject[] = [
-//   { path: '/', element: <RoleSelection /> },
-
-//   { path: '/admin/login', element: <AdminLogin /> },
-//   {
-//     path: '/admin/dashboard',
-//     element: (
-//       <RequireAuth>
-//         <AdminDashboard />
-//       </RequireAuth>
-//     ),
-//   },

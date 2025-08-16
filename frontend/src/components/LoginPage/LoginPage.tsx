@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
+import { ArrowLeft, Mail, Lock, AlertTriangle } from 'lucide-react';
+import './LoginPage.scss';
 
 export interface LoginPageProps {
   role: string;
@@ -18,7 +20,8 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
   // Role-based dashboard mapping
   const getRoleDashboard = (role: string): string => {
     const dashboardMap: { [key: string]: string } = {
-      'admin': '/admin/dashboard',
+      'admin' : '/admin/dashboard',
+      'superadmin': '/admin/dashboard',
       'doctor': '/doctor/dashboard',
       'nurse': '/nurse/dashboard',
       'patient': '/patient/dashboard',
@@ -36,7 +39,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:1000/${props.role}/login`, {
+      const response = await fetch(`http://localhost:5000/${props.role}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -53,16 +56,16 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
       // Backend should return { token, user: {name, email, role} }
       console.log('Login successful, data:', data);
       
-      // Validate role consistency (optional security check)
-      if (data.user.role && data.user.role.toLowerCase() !== props.role.toLowerCase()) {
-        throw new Error('Role mismatch. Please select the correct role.');
-      }
+      // // Validate role consistency (optional security check)
+      // if (data.user.role && data.user.role.toLowerCase() !== props.role.toLowerCase()) {
+      //   throw new Error('Role mismatch. Please select the correct role.');
+      // }
       
       login(data.token, data.user);
       console.log('Auth context updated, navigating...');
 
       // Navigate to role-specific dashboard
-      const dashboardPath = getRoleDashboard(props.role);
+      const dashboardPath = getRoleDashboard(data.user.role);
       navigate(dashboardPath);
       console.log(`Navigate called to: ${dashboardPath}`); 
 
@@ -78,66 +81,146 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
     navigate('/');
   };
 
+   const handleForgotPassword = () => {
+    // Implement forgot password functionality
+    console.log('Forgot password clicked for role:', props.role);
+  };
+
+  const getRoleDisplayName = (role: string): string => {
+    const roleNames: { [key: string]: string } = {
+      'admin': 'Administrator',
+      'superadmin': 'Super Administrator',
+      'doctor': 'Doctor',
+      'nurse': 'Nurse',
+      'patient': 'Patient',
+      'receptionist': 'Receptionist',
+      'pharmacist': 'Pharmacist',
+      'labtechnician': 'Lab Technician',
+    };
+    
+    return roleNames[role.toLowerCase()] || role.charAt(0).toUpperCase() + role.slice(1);
+  };
+
+  const getRoleIcon = (role: string): string => {
+    const iconMap: { [key: string]: string } = {
+      'admin': '👨‍💼',
+      'superadmin': '👑',
+      'doctor': '👨‍⚕️',
+      'nurse': '👩‍⚕️',
+      'patient': '🧑‍🦽',
+      'receptionist': '👩‍💻',
+      'pharmacist': '💊',
+      'labtechnician': '🔬',
+    };
+    
+    return iconMap[role.toLowerCase()] || '👤';
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
-        <div className="flex items-center justify-between mb-4">
+    <div className={`login-container ${props.role}`}>
+      <div className="login-card">
+        {/* Header */}
+        <div className="login-header">
           <button
             onClick={handleBackToRoleSelection}
-            className="text-blue-600 hover:text-blue-700 text-sm"
+            className="back-button"
             type="button"
           >
-            ← Back to Role Selection
+            <ArrowLeft size={16} />
+            Back to Role Selection
           </button>
+          
+          {/* <div className="brand-logo">
+            {getRoleIcon(props.role)}
+          </div> */}
+          
+          
+          
+          <h1 className="login-title">
+            {getRoleDisplayName(props.role)} Portal
+          </h1>
+          <p className="login-subtitle">
+            Sign in to access your dashboard
+          </p>
         </div>
-        
-        <h2 className="text-2xl font-semibold text-center mb-4">
-          {props.role.charAt(0).toUpperCase() + props.role.slice(1)} Login
-        </h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label className="form-label" htmlFor="email">
+              Email Address
+            </label>
+            <div className="input-wrapper">
+              <Mail className="input-icon" size={18} />
+              <input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                className="form-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+                autoComplete="email"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" htmlFor="password">
+              Password
+            </label>
+            <div className="input-wrapper">
+              <Lock className="input-icon" size={18} />
+              <input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                className="form-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading}
+                autoComplete="current-password"
+              />
+            </div>
+          </div>
+
           {error && (
-            <div className="text-red-600 text-sm bg-red-50 p-2 rounded">
+            <div className="error-message">
+              <AlertTriangle size={16} />
               {error}
             </div>
           )}
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="login-button"
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading && <span className="loading-spinner"></span>}
+            <span className="button-text">
+              {loading ? 'Signing In...' : 'Sign In'}
+            </span>
           </button>
         </form>
-        
-        <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
+
+        {/* Footer */}
+        <div className="login-footer">
+          <div className="forgot-password">
             Forgot your password?{' '}
             <button
-              className="text-blue-600 hover:text-blue-700"
-              onClick={() => {/* Handle forgot password */}}
+              type="button"
+              className="reset-link"
+              onClick={handleForgotPassword}
             >
               Reset here
             </button>
-          </p>
+          </div>
+
+          <div className="divider">
+            <span className="divider-text">Hospital Management System</span>
+          </div>
         </div>
       </div>
     </div>

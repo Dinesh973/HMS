@@ -53,7 +53,7 @@ const AdminDashboard: React.FC = () => {
           ))}
         </ul>
       )}
-      <button onClick={handleEdit}>Edisfusnhaosuboasubosubvouebvoousisnafobfut</button>
+      <button onClick={handleEdit}>Editt</button>
     </div>
   );
 };
